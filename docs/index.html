@@ -61,8 +61,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 72px 24px 56px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 128px);
+      width: 100%;
     }
 
     /* badge */
@@ -153,9 +162,9 @@
       font-family: 'DM Mono', monospace;
     }
 
-    /* affiliations */
+    /* affiliations — each institution on its own centered line */
     .affiliations {
-      margin-top: 14px;
+      margin-top: 16px;
       max-width: 980px;
       font-size: 0.84rem;
       font-family: 'DM Mono', monospace;
@@ -163,13 +172,14 @@
       color: #7f97b5;
       letter-spacing: 0.025em;
       text-align: center;
-      line-height: 1.9;
+      line-height: 2;
       opacity: 0;
       animation: fadeUp 0.6s ease 0.6s forwards;
     }
+    .aff-line { display: block; }
     .affiliations sup { color: var(--accent-light); font-weight: 500; }
     .note {
-      margin-top: 7px;
+      margin-top: 10px;
       font-size: 0.78rem;
       font-weight: 400;
       color: #98afc8;
@@ -184,28 +194,69 @@
       animation: fadeUp 0.6s ease 0.7s forwards;
     }
 
-    /* abstract */
-    .abstract {
+    /* ===== COLLAPSIBLE SECTION (shared for abstract & demo video) ===== */
+    .collapsible-card {
       max-width: 720px;
+      width: 100%;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 34px 40px;
       box-shadow: 0 16px 45px rgba(29, 78, 216, 0.06);
+      overflow: hidden;
       opacity: 0;
       animation: fadeUp 0.7s ease 0.8s forwards;
     }
-    .abstract-label {
+    .collapsible-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px 24px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .collapsible-label {
       font-family: 'DM Mono', monospace;
       font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent-light);
-      text-align: center;
-      margin-bottom: 18px;
     }
-    .abstract p {
+    .collapsible-chevron {
+      width: 14px; height: 14px;
+      stroke: var(--accent-light);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.35s ease;
+      flex-shrink: 0;
+    }
+    .collapsible-card.collapsed .collapsible-chevron {
+      transform: rotate(-90deg);
+    }
+
+    /* Smooth collapse via CSS grid trick */
+    .collapsible-body {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+    .collapsible-card.collapsed .collapsible-body {
+      grid-template-rows: 0fr;
+    }
+    .collapsible-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* abstract content inside collapsible */
+    .abstract-content {
+      padding: 0 40px 30px;
+    }
+    .abstract-content p {
       font-size: 0.99rem;
       font-weight: 400;
       line-height: 1.82;
@@ -260,104 +311,1046 @@
       transform: translateY(-1px);
     }
 
-    /* footer */
+    /* scroll-down arrow */
+    .scroll-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      margin-top: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      text-decoration: none;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.3s forwards,
+                 scrollBounce 2.4s ease-in-out 2.2s infinite;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .scroll-arrow:hover {
+      border-color: rgba(29,78,216,0.3);
+      background: var(--accent-dim);
+    }
+    .scroll-arrow svg {
+      width: 18px; height: 18px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .scroll-arrow:hover svg { stroke: var(--accent); }
+
+    /* ===== SECTION SHARED ===== */
+    .section-divider {
+      width: 52px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+      margin: 0 auto 32px;
+    }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+    .section-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .section-subtitle {
+      font-size: 0.92rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* fade-up observer target */
+    .fade-up-element {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-up-element.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== PROMO VIDEO SECTION ===== */
+    .promo-video-section {
+      width: 100%;
+      max-width: 960px;
+      padding: 0 24px 80px;
+      margin-top: 24px;
+    }
+    /* Collapsible wrapper for video section content */
+    .promo-collapsible-body {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.45s ease;
+    }
+    .promo-video-section.collapsed .promo-collapsible-body {
+      grid-template-rows: 0fr;
+    }
+    .promo-collapsible-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .promo-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .promo-section-header .section-label { margin-bottom: 0; }
+    .promo-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .promo-toggle-btn:hover {
+      border-color: rgba(29,78,216,0.3);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .promo-toggle-btn svg {
+      width: 12px; height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.3s ease;
+    }
+    .promo-video-section.collapsed .promo-toggle-btn svg {
+      transform: rotate(-90deg);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 45px rgba(29, 78, 216, 0.06);
+      background: linear-gradient(135deg, #0f1d35, #1a2d50);
+      aspect-ratio: 16 / 9;
+    }
+    .video-container video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ===== POSTER MODAL (window style) ===== */
+    .poster-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1000;
+      background: rgba(15, 29, 53, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .poster-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .poster-window {
+      width: 80vw;
+      height: 80vh;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 4px 20px rgba(29,78,216,0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.92) translateY(12px);
+      transition: transform 0.35s ease, width 0.4s ease, height 0.4s ease;
+    }
+    .poster-overlay.open .poster-window {
+      transform: scale(1) translateY(0);
+    }
+    /* Zoomed (fullscreen) state */
+    .poster-overlay.zoomed .poster-window {
+      width: 96vw;
+      height: 96vh;
+    }
+
+    .poster-window-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .poster-window-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      flex: 1;
+    }
+    .poster-window-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .poster-header-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .poster-header-btn:hover {
+      background: var(--accent-dim);
+      border-color: rgba(29,78,216,0.3);
+      color: var(--accent);
+    }
+    .poster-header-btn svg {
+      width: 16px; height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    /* Swap icons based on zoom state */
+    .poster-zoom-icon      { display: block; }
+    .poster-shrink-icon    { display: none; }
+    .poster-overlay.zoomed .poster-zoom-icon   { display: none; }
+    .poster-overlay.zoomed .poster-shrink-icon { display: block; }
+
+    .poster-window-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .poster-window-body img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      cursor: zoom-in;
+      transition: opacity 0.2s;
+    }
+    .poster-window-body img:hover { opacity: 0.92; }
+    .poster-overlay.zoomed .poster-window-body img { cursor: zoom-out; }
+
+    /* ===== INTERACTIVE DEMO SECTION ===== */
+    .interactive-demo-section {
+      width: 100%;
+      max-width: 960px;
+      padding: 0 24px 80px;
+      margin-top: 16px;
+    }
+
+    /* scene tabs */
+    .scene-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 9px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .tab-btn:hover {
+      border-color: rgba(29,78,216,0.3);
+      background: var(--accent-dim);
+      color: var(--text);
+    }
+    .tab-btn.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(29,78,216,0.12);
+    }
+
+    /* scene panels */
+    .scene-viewport { position: relative; }
+    .scene-panel { display: none; }
+    .scene-panel.active { display: block; }
+
+    /* slider comparison — GPU-accelerated */
+    .slider-comparison {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 45px rgba(29, 78, 216, 0.06);
+      background: #0a0f1a;
+      contain: layout style;
+    }
+    .slider-inner {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      cursor: col-resize;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: none;
+    }
+
+    /* bottom layer: input video */
+    .slider-inner .vid-input {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 1;
+    }
+
+    /* top layer: enhanced video (clipped) — GPU compositing */
+    .vid-enhanced-wrap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      -webkit-clip-path: inset(0 0 0 50%);
+      clip-path: inset(0 0 0 50%);
+      will-change: clip-path;
+      transform: translateZ(0);
+    }
+    .vid-enhanced-wrap .vid-enhanced {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* overlay labels */
+    .label-overlay {
+      position: absolute;
+      top: 14px;
+      z-index: 5;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: rgba(15, 29, 53, 0.6);
+      color: #fff;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+    .label-input { left: 14px; }
+    .label-enhanced { right: 14px; }
+
+    /* slider line */
+    .slider-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #ffffff;
+      z-index: 3;
+      transform: translateX(-50%);
+      pointer-events: none;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    /* slider handle */
+    .slider-handle {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      cursor: grab;
+      transition: box-shadow 0.2s, transform 0.15s;
+      pointer-events: auto;
+    }
+    .slider-handle:hover {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    .slider-handle:active { cursor: grabbing; }
+    .slider-handle .handle-icon {
+      width: 8px; height: 14px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .slider-handle .handle-icon-left { margin-right: 1px; }
+    .slider-handle .handle-icon-right { margin-left: 1px; }
+
+    /* ===== FOOTER ===== */
     .footer {
-      margin-top: 58px;
+      margin-top: 32px;
+      padding-bottom: 8px;
       font-family: 'DM Mono', monospace;
       font-size: 11.5px;
       font-weight: 400;
       color: #aebfd2;
       letter-spacing: 0.1em;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 1.2s forwards;
     }
 
+    /* ===== KEYFRAMES ===== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
+      50%      { opacity: 0.35; }
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(8px); }
     }
 
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .page { padding: 64px 18px 48px; }
-      .abstract { padding: 26px 20px; }
+      .hero { min-height: auto; }
       h1 { font-size: 1.92rem; line-height: 1.2; }
       .authors { gap: 8px 18px; }
       .author { font-size: 0.98rem; }
       .affiliations { font-size: 0.78rem; }
-      .abstract p { font-size: 0.94rem; text-align: left; }
+      .abstract-content { padding: 0 20px 24px; }
+      .abstract-content p { font-size: 0.94rem; text-align: left; }
+      .collapsible-header { padding: 16px 18px; }
+
+      .promo-video-section,
+      .interactive-demo-section {
+        padding: 0 16px 56px;
+      }
+      .scene-tabs { gap: 6px; }
+      .tab-btn {
+        font-size: 12px;
+        padding: 8px 14px;
+      }
+      .section-title { font-size: 1.5rem; }
+      .section-subtitle { font-size: 0.85rem; margin-bottom: 28px; }
+      .slider-handle {
+        width: 34px; height: 34px;
+      }
+      .slider-handle .handle-icon {
+        width: 7px; height: 12px;
+      }
+      .label-overlay {
+        font-size: 10px;
+        padding: 3px 8px;
+        top: 10px;
+      }
+      .label-input { left: 10px; }
+      .label-enhanced { right: 10px; }
+      .video-container { border-radius: 12px; }
+      .slider-comparison { border-radius: 12px; }
+      .promo-section-header { gap: 8px; flex-wrap: wrap; justify-content: center; }
+      .promo-toggle-btn { font-size: 10px; padding: 3px 8px; }
+      .poster-overlay { padding: 12px; }
+      .poster-window { width: 100%; height: 90vh; border-radius: 12px; }
+      .poster-overlay.zoomed .poster-window { width: 100%; height: 100vh; border-radius: 0; }
+      .poster-window-header { padding: 10px 14px; }
+      .poster-window-body { padding: 12px; }
     }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="badge">
-    <span class="badge-dot"></span>
-    <span>Details Coming Soon</span>
-  </div>
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero">
 
-  <div class="venue">ICML 2026</div>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      <span>Details Coming Soon</span>
+    </div>
 
-  <h1>
-    <span class="anymod">AnyMod</span><span class="title-rest">-LLVE: Low-Light Video Enhancement<br>with Modality-Agnostic Inference</span>
-  </h1>
+    <div class="venue">ICML 2026</div>
 
-  <div class="authors">
-    <span class="author">Hangfeng Liang<sup>* 1 2</sup></span>
-    <span class="author">Yutao Hu<sup>* † 1 2</sup></span>
-    <span class="author">Yanhan Hu<sup>1</sup></span>
-    <span class="author">Xiaohan Wu<sup>1</sup></span>
-    <span class="author">Wenqi Shao<sup>3</sup></span>
-    <span class="author">Ying Fu<sup>4</sup></span>
-  </div>
+    <h1>
+      <span class="anymod">AnyMod</span><span class="title-rest">-LLVE: Low-Light Video Enhancement<br>with Modality-Agnostic Inference</span>
+    </h1>
 
-  <div class="affiliations">
-    <sup>1</sup> School of Computer Science and Engineering, Southeast University &nbsp;&nbsp;
-    <sup>2</sup> Key Laboratory of New Generation Artificial Intelligence Technology and Its Interdisciplinary Applications (Southeast University) &nbsp;&nbsp;
-    <sup>3</sup> Shanghai Innovation Institute &nbsp;&nbsp;
-    <sup>4</sup> School of Computer Science and Technology, Beijing Institute of Technology
-    <div class="note">* Equal contribution &nbsp;&nbsp; † Corresponding author</div>
-  </div>
+    <div class="authors">
+      <span class="author">Hangfeng Liang<sup>* 1 2</sup></span>
+      <span class="author">Yutao Hu<sup>* † 1 2</sup></span>
+      <span class="author">Yanhan Hu<sup>1</sup></span>
+      <span class="author">Xiaohan Wu<sup>1</sup></span>
+      <span class="author">Wenqi Shao<sup>3</sup></span>
+      <span class="author">Ying Fu<sup>4</sup></span>
+    </div>
 
-  <div class="divider"></div>
+    <div class="affiliations">
+      <span class="aff-line"><sup>1</sup> School of Computer Science and Engineering, Southeast University</span>
+      <span class="aff-line"><sup>2</sup> Key Laboratory of New Generation AI Technology and Its Interdisciplinary Applications, Southeast University</span>
+      <span class="aff-line"><sup>3</sup> Shanghai Innovation Institute</span>
+      <span class="aff-line"><sup>4</sup> School of Computer Science and Technology, Beijing Institute of Technology</span>
+      <div class="note">* Equal contribution &nbsp;&nbsp; † Corresponding author</div>
+    </div>
 
-  <div class="abstract">
-    <div class="abstract-label">Abstract</div>
-    <p>
-      Low-light video enhancement (LLVE) remains a challenging task due to severe information
-      degradation under low-illumination conditions. Recent multimodal approaches have significantly
-      improved enhancement performance by incorporating auxiliary modalities, such as event streams
-      and infrared images. However, these methods typically assume the availability of these modalities
-      at inference, which is often not feasible in real-world scenarios. To solve this problem, in this
-      work, we propose AMNet, a unified multimodal framework for LLVE, to support flexible
-      modality-agnostic inference, where auxiliary modalities may be unavailable. To address the issue
-      of modality absence, we introduce a Spatial-Spectral Dual-Gated Translator that learns the
-      correspondence between auxiliary modalities and RGB inputs, producing implicit auxiliary
-      representations to support the robust enhancement. Additionally, to fully facilitate the learning
-      of cross-modal correspondence, we conduct large-scale multimodal pretraining based on the
-      RGB-only dataset with synthetic auxiliary modalities. Extensive experiments demonstrate that
-      AMNet could handle arbitrary inference-time modality combinations and exhibits superior
-      performance for LLVE under modality absence conditions.
-    </p>
-  </div>
+    <div class="divider"></div>
 
-  <div class="actions">
-    <a href="#" class="btn btn-primary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Paper
+    <!-- Abstract — collapsible, default expanded -->
+    <div class="collapsible-card" id="abstract-card">
+      <div class="collapsible-header" id="abstract-toggle">
+        <span class="collapsible-label">Abstract</span>
+        <svg class="collapsible-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="collapsible-body">
+        <div class="collapsible-inner">
+          <div class="abstract-content">
+            <p>
+              Low-light video enhancement (LLVE) remains a challenging task due to severe information
+              degradation under low-illumination conditions. Recent multimodal approaches have significantly
+              improved enhancement performance by incorporating auxiliary modalities, such as event streams
+              and infrared images. However, these methods typically assume the availability of these modalities
+              at inference, which is often not feasible in real-world scenarios. To solve this problem, in this
+              work, we propose AMNet, a unified multimodal framework for LLVE, to support flexible
+              modality-agnostic inference, where auxiliary modalities may be unavailable. To address the issue
+              of modality absence, we introduce a Spatial-Spectral Dual-Gated Translator that learns the
+              correspondence between auxiliary modalities and RGB inputs, producing implicit auxiliary
+              representations to support the robust enhancement. Additionally, to fully facilitate the learning
+              of cross-modal correspondence, we conduct large-scale multimodal pretraining based on the
+              RGB-only dataset with synthetic auxiliary modalities. Extensive experiments demonstrate that
+              AMNet could handle arbitrary inference-time modality combinations and exhibits superior
+              performance for LLVE under modality absence conditions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="#" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Paper
+      </a>
+      <a href="https://github.com/lhfgghc/LLVE-AMNet" class="btn btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        Code
+      </a>
+      <button class="btn btn-outline" id="poster-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Poster
+      </button>
+    </div>
+
+    <!-- Scroll-down guide arrow -->
+    <a href="#promo-video" class="scroll-arrow" aria-label="Scroll down">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
-    <a href="https://github.com/lhfgghc/LLVE-AMNet" class="btn btn-outline">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      Code
-    </a>
+
+  </div><!-- end .hero -->
+
+  <!-- ===== PROMO VIDEO SECTION (collapsible, default expanded) ===== -->
+  <section id="promo-video" class="promo-video-section fade-up-element">
+    <div class="section-divider"></div>
+    <div class="promo-section-header">
+      <h2 class="section-label">Demo Video</h2>
+      <button class="promo-toggle-btn" id="promo-toggle" type="button" aria-label="Toggle demo video">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+    <div class="promo-collapsible-body">
+      <div class="promo-collapsible-inner">
+        <div class="video-container">
+          <video controls preload="metadata" playsinline>
+            <source src="assets/videos/promo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POSTER MODAL (window style) ===== -->
+  <div class="poster-overlay" id="poster-overlay">
+    <div class="poster-window">
+      <div class="poster-window-header">
+        <span class="poster-window-title">Poster</span>
+        <div class="poster-window-actions">
+          <!-- Zoom / Shrink toggle -->
+          <button class="poster-header-btn" id="poster-zoom" type="button" aria-label="Toggle fullscreen">
+            <svg class="poster-zoom-icon" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            <svg class="poster-shrink-icon" viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
+          <!-- Close -->
+          <button class="poster-header-btn" id="poster-close" type="button" aria-label="Close poster">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="poster-window-body">
+        <img src="assets/posters/AMNet Poster.jpg" alt="AnyMod-LLVE Poster" id="poster-img" />
+      </div>
+    </div>
   </div>
 
-  <div class="footer">© 2025 Southeast University &nbsp;·&nbsp; Full release coming soon</div>
+  <!-- ===== INTERACTIVE DEMO SECTION ===== -->
+  <section id="comparison" class="interactive-demo-section fade-up-element">
+    <div class="section-divider"></div>
+    <h2 class="section-title">Visual Results</h2>
+    <p class="section-subtitle">Drag the slider to compare input and enhanced results</p>
 
-</div>
+    <!-- Scene Tabs -->
+    <div class="scene-tabs" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-scene="scene-1">Scene 1</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-scene="scene-2">Scene 2</button>
+    </div>
+
+    <!-- Scene Panels -->
+    <div class="scene-viewport">
+
+      <!-- Scene 1: video2 -->
+      <div class="scene-panel active" id="scene-1">
+        <div class="slider-comparison">
+          <div class="slider-inner" data-scene="scene-1">
+            <video class="vid-input" muted loop playsinline preload="metadata"
+                   src="assets/videos/material_mp4s_video2/01_input.mp4"></video>
+            <div class="vid-enhanced-wrap">
+              <video class="vid-enhanced" muted loop playsinline preload="metadata"
+                     src="assets/videos/material_mp4s_video2/05_amnet_present.mp4"></video>
+            </div>
+            <span class="label-overlay label-input">INPUT</span>
+            <span class="label-overlay label-enhanced">ENHANCED</span>
+            <div class="slider-line">
+              <div class="slider-handle">
+                <svg class="handle-icon handle-icon-left" viewBox="0 0 8 14"><polyline points="7 1 1 7 7 13"/></svg>
+                <svg class="handle-icon handle-icon-right" viewBox="0 0 8 14"><polyline points="1 1 7 7 1 13"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 2: video-37 -->
+      <div class="scene-panel" id="scene-2">
+        <div class="slider-comparison">
+          <div class="slider-inner" data-scene="scene-2">
+            <video class="vid-input" muted loop playsinline preload="metadata"
+                   src="assets/videos/material_mp4s_video-37/01_input.mp4"></video>
+            <div class="vid-enhanced-wrap">
+              <video class="vid-enhanced" muted loop playsinline preload="metadata"
+                     src="assets/videos/material_mp4s_video-37/05_amnet_present.mp4"></video>
+            </div>
+            <span class="label-overlay label-input">INPUT</span>
+            <span class="label-overlay label-enhanced">ENHANCED</span>
+            <div class="slider-line">
+              <div class="slider-handle">
+                <svg class="handle-icon handle-icon-left" viewBox="0 0 8 14"><polyline points="7 1 1 7 7 13"/></svg>
+                <svg class="handle-icon handle-icon-right" viewBox="0 0 8 14"><polyline points="1 1 7 7 1 13"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .scene-viewport -->
+  </section>
+
+  <!-- ===== FOOTER (last element on page) ===== -->
+  <div class="footer fade-up-element">&copy; 2026 Southeast University &nbsp;&middot;&nbsp; Full release coming soon</div>
+
+</div><!-- end .page -->
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+   *  State
+   * ============================================================ */
+  var currentScene = 'scene-1';
+  var isDragging = false;
+  var activeSliderInner = null;
+  var rafId = null;              // requestAnimationFrame id for slider
+  var pendingPct = null;         // buffered slider percentage
+  var scenes = {};
+
+  /* ============================================================
+   *  Scene Initialization
+   * ============================================================ */
+  function initScenes() {
+    document.querySelectorAll('.slider-inner').forEach(function (inner) {
+      var id = inner.dataset.scene;
+      var inputVid     = inner.querySelector('.vid-input');
+      var enhancedWrap = inner.querySelector('.vid-enhanced-wrap');
+      var enhancedVid  = inner.querySelector('.vid-enhanced');
+      var sliderLine   = inner.querySelector('.slider-line');
+      var sliderHandle = inner.querySelector('.slider-handle');
+
+      scenes[id] = {
+        inputVid: inputVid,
+        enhancedVid: enhancedVid,
+        enhancedWrap: enhancedWrap,
+        sliderLine: sliderLine,
+        sliderHandle: sliderHandle,
+        inner: inner
+      };
+
+      setClip(enhancedWrap, 50);
+      sliderLine.style.left = '50%';
+      sliderHandle.style.left = '50%';
+    });
+  }
+
+  /* ============================================================
+   *  Clip-path helper (with -webkit prefix for Safari)
+   * ============================================================ */
+  function setClip(el, pct) {
+    var val = 'inset(0 0 0 ' + pct + '%)';
+    el.style.clipPath = val;
+    el.style.webkitClipPath = val;
+  }
+
+  /* ============================================================
+   *  Slider Drag — uses rAF batching for smooth 60fps
+   * ============================================================ */
+  function pctFromEvent(clientX, inner) {
+    var rect = inner.getBoundingClientRect();
+    return Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+  }
+
+  /* Apply the buffered slider position in a single rAF frame */
+  function applySliderFrame() {
+    rafId = null;
+    if (pendingPct === null || !activeSliderInner) return;
+    var pct = pendingPct;
+    pendingPct = null;
+
+    var id = activeSliderInner.dataset.scene;
+    var s = scenes[id];
+    setClip(s.enhancedWrap, pct);
+    s.sliderLine.style.left = pct + '%';
+    s.sliderHandle.style.left = pct + '%';
+    /* No currentTime sync here — both videos are paused during drag */
+  }
+
+  function requestSliderUpdate(pct) {
+    pendingPct = pct;
+    if (rafId === null) {
+      rafId = requestAnimationFrame(applySliderFrame);
+    }
+  }
+
+  function onPointerDown(clientX, inner) {
+    isDragging = true;
+    activeSliderInner = inner;
+
+    /* Pause both videos so frames stay perfectly aligned while dragging */
+    var id = inner.dataset.scene;
+    var s = scenes[id];
+    if (s) {
+      s.inputVid.pause();
+      s.enhancedVid.pause();
+    }
+
+    requestSliderUpdate(pctFromEvent(clientX, inner));
+  }
+
+  function onPointerMove(clientX) {
+    if (!isDragging || !activeSliderInner) return;
+    requestSliderUpdate(pctFromEvent(clientX, activeSliderInner));
+  }
+
+  function onPointerUp() {
+    if (!isDragging) return;
+    isDragging = false;
+
+    /* Flush any remaining frame */
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+      applySliderFrame();
+    }
+
+    /* Resume playback — both videos start from the same paused frame */
+    if (activeSliderInner) {
+      var id = activeSliderInner.dataset.scene;
+      var s = scenes[id];
+      if (s) {
+        s.inputVid.play().catch(function () {});
+        s.enhancedVid.play().catch(function () {});
+      }
+    }
+    activeSliderInner = null;
+  }
+
+  function attachSliderListeners() {
+    document.querySelectorAll('.slider-inner').forEach(function (inner) {
+      inner.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        onPointerDown(e.clientX, inner);
+      });
+      inner.addEventListener('touchstart', function (e) {
+        if (e.touches.length === 1) {
+          e.preventDefault();
+          onPointerDown(e.touches[0].clientX, inner);
+        }
+      }, { passive: false });
+    });
+
+    document.addEventListener('mousemove', function (e) { onPointerMove(e.clientX); });
+    document.addEventListener('mouseup', onPointerUp);
+    document.addEventListener('touchmove', function (e) {
+      if (isDragging && e.touches.length === 1) {
+        e.preventDefault();
+        onPointerMove(e.touches[0].clientX);
+      }
+    }, { passive: false });
+    document.addEventListener('touchend', onPointerUp);
+    document.addEventListener('touchcancel', onPointerUp);
+  }
+
+  /* ============================================================
+   *  Pause all scene videos
+   * ============================================================ */
+  function pauseAllVideos() {
+    Object.keys(scenes).forEach(function (id) {
+      scenes[id].inputVid.pause();
+      scenes[id].enhancedVid.pause();
+    });
+  }
+
+  /* ============================================================
+   *  Tab Switching
+   * ============================================================ */
+  function switchScene(newSceneId) {
+    if (newSceneId === currentScene) return;
+
+    pauseAllVideos();
+
+    var s = scenes[newSceneId];
+    setClip(s.enhancedWrap, 50);
+    s.sliderLine.style.left = '50%';
+    s.sliderHandle.style.left = '50%';
+
+    document.querySelectorAll('.scene-panel').forEach(function (p) {
+      p.classList.remove('active');
+    });
+    document.getElementById(newSceneId).classList.add('active');
+
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+      var isActive = btn.dataset.scene === newSceneId;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    /* Play new scene — both videos start together, naturally in sync */
+    s.inputVid.play().catch(function () {});
+    s.enhancedVid.play().catch(function () {});
+
+    currentScene = newSceneId;
+  }
+
+  function wireTabs() {
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        switchScene(btn.dataset.scene);
+      });
+    });
+  }
+
+  /* ============================================================
+   *  Collapsible Sections (abstract & promo video)
+   * ============================================================ */
+  function initCollapsibles() {
+    /* Abstract toggle */
+    var abstractCard = document.getElementById('abstract-card');
+    var abstractToggle = document.getElementById('abstract-toggle');
+    if (abstractCard && abstractToggle) {
+      abstractToggle.addEventListener('click', function () {
+        abstractCard.classList.toggle('collapsed');
+      });
+    }
+
+    /* Promo video toggle */
+    var promoSection = document.querySelector('.promo-video-section');
+    var promoToggle = document.getElementById('promo-toggle');
+    if (promoSection && promoToggle) {
+      promoToggle.addEventListener('click', function () {
+        promoSection.classList.toggle('collapsed');
+        /* Pause video when collapsing */
+        if (promoSection.classList.contains('collapsed')) {
+          var vid = promoSection.querySelector('video');
+          if (vid) vid.pause();
+        }
+      });
+    }
+  }
+
+  /* ============================================================
+   *  Poster Modal
+   * ============================================================ */
+  function initPoster() {
+    var overlay = document.getElementById('poster-overlay');
+    var openBtn = document.getElementById('poster-btn');
+    var closeBtn = document.getElementById('poster-close');
+    var zoomBtn = document.getElementById('poster-zoom');
+    var posterImg = document.getElementById('poster-img');
+    if (!overlay || !openBtn || !closeBtn) return;
+
+    function openPoster() {
+      overlay.classList.add('open');
+      overlay.classList.remove('zoomed');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePoster() {
+      overlay.classList.remove('open', 'zoomed');
+      document.body.style.overflow = '';
+    }
+    function toggleZoom() {
+      overlay.classList.toggle('zoomed');
+    }
+
+    openBtn.addEventListener('click', openPoster);
+    closeBtn.addEventListener('click', closePoster);
+
+    /* Zoom button */
+    if (zoomBtn) zoomBtn.addEventListener('click', toggleZoom);
+
+    /* Click on image to toggle zoom */
+    if (posterImg) posterImg.addEventListener('click', toggleZoom);
+
+    /* Click overlay backdrop to close */
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closePoster();
+    });
+
+    /* ESC to close */
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape') closePoster();
+    });
+  }
+
+  /* ============================================================
+   *  IntersectionObserver for fade-up animations
+   * ============================================================ */
+  function initObserver() {
+    var targets = document.querySelectorAll('.fade-up-element');
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (t) { t.classList.add('visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    targets.forEach(function (t) { observer.observe(t); });
+  }
+
+  /* ============================================================
+   *  Scroll Arrow smooth scroll
+   * ============================================================ */
+  function initScrollArrow() {
+    var arrow = document.querySelector('.scroll-arrow');
+    if (!arrow) return;
+    arrow.addEventListener('click', function (e) {
+      e.preventDefault();
+      var target = document.getElementById('promo-video');
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  /* ============================================================
+   *  Initial Scene Playback (autoplay first scene)
+   * ============================================================ */
+  function initFirstScenePlayback() {
+    var s = scenes['scene-1'];
+    if (!s) return;
+    /* Both videos start together — timeupdate listener handles drift correction */
+    s.inputVid.play().catch(function () {});
+    s.enhancedVid.play().catch(function () {});
+  }
+
+  /* ============================================================
+   *  Bootstrap
+   * ============================================================ */
+  document.addEventListener('DOMContentLoaded', function () {
+    initScenes();
+    attachSliderListeners();
+    wireTabs();
+    initCollapsibles();
+    initPoster();
+    initObserver();
+    initScrollArrow();
+    setTimeout(initFirstScenePlayback, 600);
+  });
+})();
+</script>
 </body>
 </html>
