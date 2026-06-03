@@ -1,0 +1,88 @@
+# AMNet SDSD-Outdoor RGB-only Training Config
+
+dataset:
+  type: "sdsd_out"
+  root: "/path/to/SDSD/outdoor_np"  # Change to your dataset path
+  clip_len: 8
+  clip_stride: 2
+  crop_size: [128, 128]
+  base_size: 256
+  num_workers: 6
+  split_json: "configs/splits/sdsd_outdoor_split.json"
+
+model:
+  # Architecture
+  in_ch: 3
+  encoder_channels: [64, 128, 256, 256]
+  latent_dim: 256
+  convlstm_hidden_ch: 256
+  convlstm_layers: 1
+
+  # Encoder/Decoder
+  encoder_num_blocks: [1, 1, 2, 2]
+  decoder_num_blocks: [2, 2, 1, 2]
+  use_multimodal_illumination: true
+
+  # SNR-guided fusion
+  snr_factor: 1.0
+  snr_threshold: 0.5
+  snr_fusion_depth: 1
+  use_snr_guided_fusion: true
+
+  # Gradient checkpointing for memory saving
+  use_checkpoint: true
+  checkpoint_encoder: true
+  checkpoint_decoder: true
+  checkpoint_aux_encoder: true
+  checkpoint_fusion: true
+
+  pretrain_model: 'checkpoints/amnet_pretrained.pth'
+
+train:
+  batch_size: 4
+  accumulate_grad_batches: 1
+  use_amp: false
+  num_epochs: 100
+  lr: 1.0e-6
+  optim: "adamw"
+  weight_decay: 1.0e-4
+  log_interval: 10
+  save_interval: 1
+  max_ckpt: 3
+  use_ema: true
+  ema_decay: 0.999
+  ema_start_epoch: 0
+  scheduler:
+    use: True
+    type: "cosine"
+    warmup_epochs: 10
+    min_lr: 1e-8
+    num_cycles: 1
+  loss_weight:
+    lambda_robust: 1.0
+    lambda_real: 0.6
+    lambda_distill_ir: 0.5
+    lambda_distill_event: 0.2
+    lambda_ssim: 0.1
+    distill_warmup_epochs: 5
+
+  # RGB-only mode
+  train_use_real_event: false
+  train_use_real_ir: false
+
+  # Backbone frozen, aux encoders frozen (RGB-only)
+  freeze_backbone: true
+  freeze_aux_encoders: true
+  rgb_only: true
+
+exp:
+  seed: 3407
+  out_dir: "outputs"
+  experiment_name: "amnet/sdsd/sdsd_out_rgb"
+  use_swanlab: false
+  swanlab_project: "AMNet"
+  resume: null
+  eval_before_train: false
+  num_vis_samples: 3
+  random_vis_samples: true
+  save_visuals: true

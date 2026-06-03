@@ -1,0 +1,22 @@
+# Training outputs
+outputs/
+logs/
+
+# Checkpoints (large .pth files)
+checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

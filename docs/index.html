@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AnyMod-LLVE — Project Page</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316213e'/%3E%3Ccircle cx='16' cy='16' r='8.5' fill='none' stroke='%23e2b94e' stroke-width='1.5' opacity='.3'/%3E%3Cpath d='M16 7L25.5 16L16 25L6.5 16Z' fill='%23e2b94e'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Mono:wght@400;500&family=Lato:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -750,6 +751,64 @@
     .slider-handle .handle-icon-left { margin-right: 1px; }
     .slider-handle .handle-icon-right { margin-left: 1px; }
 
+    /* ===== CITATION SECTION ===== */
+    .citation-section {
+      width: 100%;
+      max-width: 720px;
+      padding: 0 24px 80px;
+    }
+    .citation-box {
+      position: relative;
+      background: #0f1729;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .citation-box pre {
+      margin: 0;
+      padding: 24px 56px 24px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #c8d6e5;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-x: auto;
+    }
+    .citation-box .citation-placeholder {
+      color: #7f97b5;
+      font-style: italic;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 1px solid rgba(59,130,246,0.2);
+      background: rgba(29, 78, 216, 0.12);
+      color: var(--accent-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: rgba(29, 78, 216, 0.25);
+      border-color: rgba(59,130,246,0.4);
+    }
+    .copy-btn svg {
+      width: 16px; height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .copy-btn .check-icon { display: none; }
+    .copy-btn.copied .copy-icon  { display: none; }
+    .copy-btn.copied .check-icon { display: block; color: #34d399; }
+
     /* ===== FOOTER ===== */
     .footer {
       margin-top: 32px;
@@ -820,6 +879,8 @@
       .poster-overlay.zoomed .poster-window { width: 100%; height: 100vh; border-radius: 0; }
       .poster-window-header { padding: 10px 14px; }
       .poster-window-body { padding: 12px; }
+      .citation-section { padding: 0 16px 56px; }
+      .citation-box pre { padding: 18px 48px 18px 18px; font-size: 11.5px; }
     }
   </style>
 </head>
@@ -970,15 +1031,15 @@
     <!-- Scene Panels -->
     <div class="scene-viewport">
 
-      <!-- Scene 1: video2 -->
+      <!-- Scene 1: demo-1 -->
       <div class="scene-panel active" id="scene-1">
         <div class="slider-comparison">
           <div class="slider-inner" data-scene="scene-1">
-            <video class="vid-input" muted loop playsinline preload="metadata"
-                   src="assets/videos/material_mp4s_video2/01_input.mp4"></video>
+            <video class="vid-input" muted loop playsinline preload="auto"
+                   src="assets/videos/demo-1/input.mp4"></video>
             <div class="vid-enhanced-wrap">
-              <video class="vid-enhanced" muted loop playsinline preload="metadata"
-                     src="assets/videos/material_mp4s_video2/05_amnet_present.mp4"></video>
+              <video class="vid-enhanced" muted loop playsinline preload="auto"
+                     src="assets/videos/demo-1/amnet_pred.mp4"></video>
             </div>
             <span class="label-overlay label-input">INPUT</span>
             <span class="label-overlay label-enhanced">ENHANCED</span>
@@ -992,15 +1053,15 @@
         </div>
       </div>
 
-      <!-- Scene 2: video-37 -->
+      <!-- Scene 2: demo-2 -->
       <div class="scene-panel" id="scene-2">
         <div class="slider-comparison">
           <div class="slider-inner" data-scene="scene-2">
             <video class="vid-input" muted loop playsinline preload="metadata"
-                   src="assets/videos/material_mp4s_video-37/01_input.mp4"></video>
+                   src="assets/videos/demo-2/input.mp4"></video>
             <div class="vid-enhanced-wrap">
               <video class="vid-enhanced" muted loop playsinline preload="metadata"
-                     src="assets/videos/material_mp4s_video-37/05_amnet_present.mp4"></video>
+                     src="assets/videos/demo-2/amnet_pred.mp4"></video>
             </div>
             <span class="label-overlay label-input">INPUT</span>
             <span class="label-overlay label-enhanced">ENHANCED</span>
@@ -1015,6 +1076,23 @@
       </div>
 
     </div><!-- end .scene-viewport -->
+  </section>
+
+  <!-- ===== CITATION SECTION ===== -->
+  <section id="citation" class="citation-section fade-up-element">
+    <div class="section-divider"></div>
+    <div class="section-label-row">
+      <h2 class="section-label">Citation</h2>
+    </div>
+    <h2 class="section-title">Cite This Work</h2>
+    <p class="section-subtitle">If you find this work useful, please cite our paper:</p>
+    <div class="citation-box">
+      <button class="copy-btn" id="copy-bibtex" type="button" aria-label="Copy BibTeX">
+        <svg class="copy-icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+      <pre id="bibtex-content"><span class="citation-placeholder">&gt; BibTeX entry coming soon.</span></pre>
+    </div>
   </section>
 
   <!-- ===== FOOTER (last element on page) ===== -->
@@ -1054,7 +1132,8 @@
         enhancedWrap: enhancedWrap,
         sliderLine: sliderLine,
         sliderHandle: sliderHandle,
-        inner: inner
+        inner: inner,
+        stallTimer: null          // per-scene stall guard timer
       };
 
       setClip(enhancedWrap, 50);
@@ -1070,6 +1149,188 @@
     var val = 'inset(0 0 0 ' + pct + '%)';
     el.style.clipPath = val;
     el.style.webkitClipPath = val;
+  }
+
+  /* ============================================================
+   *  Video Sync — rAF loop with RATE-ONLY correction.
+   *
+   *  NEVER seeks unless drift > 1.5s (tab-switch recovery).
+   *  Seeking forces the browser to flush its decode pipeline and
+   *  re-decode from the nearest keyframe, which IS the stutter.
+   *
+   *  Rate nudge is invisible: ±5-8% speed change is imperceptible.
+   * ============================================================ */
+  var syncRafId = null;
+
+  function startSyncLoop() {
+    if (syncRafId !== null) return;
+
+    function tick() {
+      syncRafId = null;
+
+      if (!isDragging) {
+        var s = scenes[currentScene];
+        if (s && !s.inputVid.paused && !s.enhancedVid.paused) {
+          var drift = s.enhancedVid.currentTime - s.inputVid.currentTime;
+          var abs = Math.abs(drift);
+
+          if (abs > 1.5) {
+            // Extreme drift (tab switch) — one-time seek
+            s.enhancedVid.currentTime = s.inputVid.currentTime;
+            s.enhancedVid.playbackRate = 1.0;
+          } else if (abs < 0.04) {
+            // Within ~1 frame — perfect sync, no correction
+            if (s.enhancedVid.playbackRate !== 1.0) s.enhancedVid.playbackRate = 1.0;
+          } else if (abs < 0.5) {
+            // Small drift — gentle nudge (imperceptible)
+            s.enhancedVid.playbackRate = drift > 0 ? 0.94 : 1.06;
+          } else {
+            // Medium drift — stronger catch-up
+            s.enhancedVid.playbackRate = drift > 0 ? 0.88 : 1.12;
+          }
+        }
+      }
+
+      syncRafId = requestAnimationFrame(tick);
+    }
+
+    syncRafId = requestAnimationFrame(tick);
+  }
+
+  /* ============================================================
+   *  Stall guard — if one video buffers, pause the other.
+   *  Only active while not dragging; drag has its own pause logic.
+   * ============================================================ */
+  function clearStallTimer(s) {
+    if (s.stallTimer) {
+      clearTimeout(s.stallTimer);
+      s.stallTimer = null;
+    }
+  }
+
+  function attachStallHandlers(sceneId) {
+    var s = scenes[sceneId];
+    if (!s) return;
+
+    var master = s.inputVid;
+    var slave  = s.enhancedVid;
+    var wasStalledByUs = false;
+
+    function onWaiting() {
+      if (isDragging) return;
+      clearStallTimer(s);
+      s.stallTimer = setTimeout(function() {
+        if (master.readyState < 3 || slave.readyState < 3) {
+          wasStalledByUs = true;
+          if (!master.paused) master.pause();
+          if (!slave.paused)  slave.pause();
+        }
+      }, 200);
+    }
+
+    function onCanPlay() {
+      if (isDragging || !wasStalledByUs) return;
+      clearStallTimer(s);
+      if (master.readyState >= 3 && slave.readyState >= 3) {
+        wasStalledByUs = false;
+        slave.currentTime = master.currentTime;
+        var p1 = master.play();
+        var p2 = slave.play();
+        if (p1) p1.catch(function(){});
+        if (p2) p2.catch(function(){});
+      }
+    }
+
+    master.addEventListener('waiting', onWaiting);
+    slave.addEventListener('waiting', onWaiting);
+    master.addEventListener('canplay', onCanPlay);
+    slave.addEventListener('canplay', onCanPlay);
+
+    // Loop restart — snap-align so loop boundaries don't drift apart
+    master.addEventListener('seeked', function() {
+      var d = slave.currentTime - master.currentTime;
+      if (Math.abs(d) > 0.04) slave.currentTime = master.currentTime;
+    });
+    slave.addEventListener('seeked', function() {
+      var d = slave.currentTime - master.currentTime;
+      if (Math.abs(d) > 0.04) slave.currentTime = master.currentTime;
+    });
+  }
+
+  /* ============================================================
+   *  Resume playback after pause (drag release / stall recovery).
+   *  Aligns slave, plays both, waits for both, then sync loop
+   *  picks up automatically.
+   * ============================================================ */
+  function resumeScene(sceneId) {
+    var s = scenes[sceneId];
+    if (!s) return;
+
+    // Align slave to master
+    s.enhancedVid.currentTime = s.inputVid.currentTime;
+
+    var p1 = s.inputVid.play();
+    var p2 = s.enhancedVid.play();
+
+    // If either play() fails, retry the other after a tick
+    if (p1) p1.catch(function() {});
+    if (p2) p2.catch(function() {});
+  }
+
+  /* ============================================================
+   *  Play scene from the start (tab switch / initial load).
+   *  Aligns positions, plays both, starts sync loop.
+   * ============================================================ */
+  function playSceneSynced(sceneId) {
+    var s = scenes[sceneId];
+    if (!s) return;
+
+    s.enhancedVid.playbackRate = 1.0;
+    s.inputVid.playbackRate = 1.0;
+
+    function go() {
+      s.enhancedVid.currentTime = s.inputVid.currentTime;
+      var p1 = s.inputVid.play();
+      var p2 = s.enhancedVid.play();
+      if (p1) p1.catch(function() {});
+      if (p2) p2.catch(function() {});
+      startSyncLoop();
+    }
+
+    if (s.inputVid.readyState >= 3 && s.enhancedVid.readyState >= 3) {
+      go();
+    } else {
+      var ready = 0;
+      function onReady() {
+        ready++;
+        if (ready >= 2) {
+          s.inputVid.removeEventListener('canplay', onReady);
+          s.enhancedVid.removeEventListener('canplay', onReady);
+          go();
+        }
+      }
+      if (s.inputVid.readyState >= 3) { ready++; } else { s.inputVid.addEventListener('canplay', onReady); }
+      if (s.enhancedVid.readyState >= 3) { ready++; } else { s.enhancedVid.addEventListener('canplay', onReady); }
+      if (ready >= 2) {
+        s.inputVid.removeEventListener('canplay', onReady);
+        s.enhancedVid.removeEventListener('canplay', onReady);
+        go();
+      }
+    }
+  }
+
+  /* ============================================================
+   *  Visibility change — re-sync when tab becomes visible
+   * ============================================================ */
+  function attachVisibilitySync() {
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        var s = scenes[currentScene];
+        if (s && !s.inputVid.paused) {
+          s.enhancedVid.currentTime = s.inputVid.currentTime;
+        }
+      }
+    });
   }
 
   /* ============================================================
@@ -1092,7 +1353,6 @@
     setClip(s.enhancedWrap, pct);
     s.sliderLine.style.left = pct + '%';
     s.sliderHandle.style.left = pct + '%';
-    /* No currentTime sync here — both videos are paused during drag */
   }
 
   function requestSliderUpdate(pct) {
@@ -1106,10 +1366,10 @@
     isDragging = true;
     activeSliderInner = inner;
 
-    /* Pause both videos so frames stay perfectly aligned while dragging */
     var id = inner.dataset.scene;
     var s = scenes[id];
     if (s) {
+      clearStallTimer(s);
       s.inputVid.pause();
       s.enhancedVid.pause();
     }
@@ -1126,21 +1386,17 @@
     if (!isDragging) return;
     isDragging = false;
 
-    /* Flush any remaining frame */
+    /* Flush any remaining slider frame */
     if (rafId !== null) {
       cancelAnimationFrame(rafId);
       rafId = null;
       applySliderFrame();
     }
 
-    /* Resume playback — both videos start from the same paused frame */
+    /* Resume — sync loop is already running, just needs both playing */
     if (activeSliderInner) {
       var id = activeSliderInner.dataset.scene;
-      var s = scenes[id];
-      if (s) {
-        s.inputVid.play().catch(function () {});
-        s.enhancedVid.play().catch(function () {});
-      }
+      resumeScene(id);
     }
     activeSliderInner = null;
   }
@@ -1176,8 +1432,12 @@
    * ============================================================ */
   function pauseAllVideos() {
     Object.keys(scenes).forEach(function (id) {
-      scenes[id].inputVid.pause();
-      scenes[id].enhancedVid.pause();
+      var s = scenes[id];
+      clearStallTimer(s);
+      s.inputVid.pause();
+      s.enhancedVid.pause();
+      s.inputVid.playbackRate = 1.0;
+      s.enhancedVid.playbackRate = 1.0;
     });
   }
 
@@ -1189,7 +1449,18 @@
 
     pauseAllVideos();
 
+    // Demote old scene to lazy loading
+    var old = scenes[currentScene];
+    if (old) {
+      old.inputVid.preload = 'metadata';
+      old.enhancedVid.preload = 'metadata';
+    }
+
+    // Promote new scene to full buffering
     var s = scenes[newSceneId];
+    s.inputVid.preload = 'auto';
+    s.enhancedVid.preload = 'auto';
+
     setClip(s.enhancedWrap, 50);
     s.sliderLine.style.left = '50%';
     s.sliderHandle.style.left = '50%';
@@ -1205,11 +1476,8 @@
       btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    /* Play new scene — both videos start together, naturally in sync */
-    s.inputVid.play().catch(function () {});
-    s.enhancedVid.play().catch(function () {});
-
     currentScene = newSceneId;
+    playSceneSynced(newSceneId);
   }
 
   function wireTabs() {
@@ -1330,11 +1598,39 @@
    *  Initial Scene Playback (autoplay first scene)
    * ============================================================ */
   function initFirstScenePlayback() {
+    /* Set up stall handlers and sync for all scenes */
+    Object.keys(scenes).forEach(function(id) {
+      attachStallHandlers(id);
+    });
+    attachVisibilitySync();
+
     var s = scenes['scene-1'];
     if (!s) return;
-    /* Both videos start together — timeupdate listener handles drift correction */
-    s.inputVid.play().catch(function () {});
-    s.enhancedVid.play().catch(function () {});
+    /* Both videos start together with active drift correction */
+    playSceneSynced('scene-1');
+  }
+
+  /* ============================================================
+   *  Copy BibTeX button
+   * ============================================================ */
+  function initCopyBibtex() {
+    var btn = document.getElementById('copy-bibtex');
+    var pre = document.getElementById('bibtex-content');
+    if (!btn || !pre) return;
+    btn.addEventListener('click', function () {
+      var text = pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.classList.add('copied');
+        setTimeout(function () { btn.classList.remove('copied'); }, 2000);
+      }).catch(function () {
+        // fallback: select text
+        var range = document.createRange();
+        range.selectNodeContents(pre);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    });
   }
 
   /* ============================================================
@@ -1348,6 +1644,7 @@
     initPoster();
     initObserver();
     initScrollArrow();
+    initCopyBibtex();
     setTimeout(initFirstScenePlayback, 600);
   });
 })();
