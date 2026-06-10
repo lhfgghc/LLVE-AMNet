@@ -3,7 +3,9 @@
 <h1>AnyMod-LLVE: Low-Light Video Enhancement with Modality-Agnostic Inference</h1>
 
 <p>
-  <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b.svg" alt="arXiv (coming soon)"/>
+  <a href="https://arxiv.org/abs/2606.11186">
+    <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b.svg" alt="arXiv"/>
+  </a>
   <a href="https://lhfgghc.github.io/LLVE-AMNet/">
     <img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"/>
   </a>
