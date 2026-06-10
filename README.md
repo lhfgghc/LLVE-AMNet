@@ -107,7 +107,15 @@ python scripts/train.py --cfg configs/experiments/amnet/<config>.yaml
 
 ## 📖 Citation
 
-> BibTeX entry coming soon.
+@misc{liang2026amnet,
+      title={AnyMod-LLVE: Low-Light Video Enhancement with Modality-Agnostic Inference}, 
+      author={Hangfeng Liang and Yutao Hu and Yanhan Hu and Xiaohan Wu and Wenqi Shao and Ying Fu},
+      year={2026},
+      eprint={2606.11186},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2606.11186}, 
+}
 
 ---
 
