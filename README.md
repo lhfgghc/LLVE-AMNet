@@ -22,6 +22,8 @@ Official implementation of **AMNet**, a unified multimodal framework for **low-l
 
 > Unlike existing multimodal LLVE methods that require auxiliary modalities (e.g., events or infrared images) at test time, **AMNet** can leverage available modalities when present and remain robust when they are absent — via implicit modality generation.
 
+Ascend NPU implementation available at [LLVE-AMNet-NPU](https://github.com/lhfgghc/LLVE-AMNet-NPU).
+
 ---
 
 ## 📋 Table of Contents
