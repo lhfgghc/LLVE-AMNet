@@ -69,7 +69,7 @@ checkpoints/
 └── amnet_pretrained.pth
 ```
 
-> 📥 **Download:** [amnet_pretrained.pth](https://drive.google.com/file/d/1Jyo9xI5ymPHFdB56Gq83hbCSjswfi3PK/view?usp=drive_link)
+> 📥 **Download:** [amnet_pretrained.pth](https://drive.google.com/file/d/1Jyo9xI5ymPHFdB56Gq83hbCSjswfi3PK/view?usp=drive_link) [Baidu Cloud, Key=2nt7](https://pan.baidu.com/s/1N9Ol-w3koTrJDx224o724Q)
 >
 > All training configs share this same pretrained model for fine-tuning.
 
