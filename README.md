@@ -32,6 +32,7 @@ Ascend NPU implementation available at [LLVE-AMNet-NPU](https://github.com/lhfgg
 - [Installation](#-installation)
 - [Getting Started](#-getting-started)
   - [Pretrained Weights](#1-download-pretrained-weights)
+  - [Fine-tuned Weights](#fine-tuned-weights)
   - [Prepare Datasets](#2-prepare-datasets)
   - [Training](#3-training)
 - [Citation](#-citation)
@@ -72,9 +73,37 @@ checkpoints/
 > 📥 **Download**
 >
 > - **Google Drive:** [amnet_pretrained.pth](https://drive.google.com/file/d/1Jyo9xI5ymPHFdB56Gq83hbCSjswfi3PK/view?usp=drive_link)
-> - **Baidu Cloud:** [amnet_pretrained.pth](https://pan.baidu.com/s/1N9Ol-w3koTrJDx224o724Q) (Access Code: `2nt7`) 
+> - **Baidu Cloud:** [amnet_pretrained.pth](https://pan.baidu.com/s/1VzNG1yPM9A5INUnGpmfI1g) (Access Code: `vuux`) 
 >
 > All training configs share this same pretrained model for fine-tuning.
+
+---
+
+### Fine-tuned Weights
+
+Download the fine-tuned checkpoints for each dataset and place them under `checkpoints/`:
+
+```
+checkpoints/
+├── amnet_pretrained.pth
+├── did_rgb.pth
+├── sdsd_in_rgb.pth
+├── sdsd_out_rgb.pth
+├── sde_in_rgb.pth
+└── sde_out_rgb.pth
+```
+
+| Dataset | Modality | PSNR | Download |
+|---------|----------|------|----------|
+| DID-1080 | RGB | **31.57** | [Baidu Cloud](https://pan.baidu.com/s/1pThkqOhzP9XasukiREa3jg) (Access Code: `cwep`) |
+| SDSD Indoor | RGB | **29.03** | [Baidu Cloud](https://pan.baidu.com/s/1ZsNOP4tskXxMKRFgru9vMQ) (Access Code: `3a4v`) |
+| SDSD Outdoor | RGB | **26.37** | [Baidu Cloud](https://pan.baidu.com/s/1nhtWTKTvNeqcOC2h1Q41xg) (Access Code: `1ng4`) |
+| SDE Indoor | R | **23.04** | [Baidu Cloud](https://pan.baidu.com/s/1Yv0ooYNxW2Cm6X5aGd9vLA) (Access Code: `gccn`) |
+| | R+E | **23.22** | |
+| SDE Outdoor | R | **23.75** | [Baidu Cloud](https://pan.baidu.com/s/1JTZFPZ8Z_Qq8t5HVPuglnQ) (Access Code: `wccv`) |
+| | R+E | **23.88** | |
+
+> 📥 All fine-tuned models share the same pretrained model for initialization.
 
 ---
 
